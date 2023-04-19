@@ -2,8 +2,9 @@
 Imports System.IO
 Public Class Form1
     Private Structure ConstFileSizes
-        Const nonNitro As Integer = 8388607
-        Const nitro As Integer = 52428799
+        Const nonNitro As Integer = 26214399
+        Const nitroBasic As Integer = 52428799
+        Const nitro As Integer = 524287999
     End Structure
     Dim fileSize As Integer = ConstFileSizes.nonNitro
     Private Sub FromDTP(sender As Object, e As EventArgs) Handles ConvertFromDTP.Click
@@ -59,6 +60,8 @@ FromDTP:
 
             If path.Split(".")(path.Split(".").Length - 1)(0) = "n" Then
                 ReDim buffer(ConstFileSizes.nitro)
+            ElseIf path.Split(".")(path.Split(".").Length - 1)(0) = "b" Then
+                ReDim buffer(ConstFileSizes.nitroBasic)
             Else
                 ReDim buffer(ConstFileSizes.nonNitro)
             End If
@@ -78,7 +81,7 @@ FromDTP:
             Try
                 returnArr(Integer.Parse(path.Split("p")(path.Split("p").Length - 1)) - 1) = path
             Catch ex As Exception
-                Select Case MsgBox("Files aren't in the correct format, this is likely because they are not .dtp files, e.g. file.txt.dtp1", MsgBoxStyle.RetryCancel, "Files likely incompatible")
+                Select Case MsgBox("Files aren't in the correct format, this is likely because they are not .dtp, .bdtp or .ndtp files, e.g. file.txt.dtp1", MsgBoxStyle.RetryCancel, "Files likely incompatible")
                     Case Is = vbCancel
                         Dim emptyString(0) As String
                         Arr = emptyString
@@ -120,10 +123,12 @@ ToDTP:
                     bufferLen = readStream.Read(buffer, 0, fileSize)
                     If 0 <> bufferLen Then
                         Dim writeStream As FileStream
-                        If CheckBox1.Checked Then
-                            writeStream = File.Create(writeName & readFileName & ".ndtp" & loopIndex)
-                        Else
+                        If RadioButton1.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".dtp" & loopIndex)
+                        ElseIf RadioButton2.Checked Then
+                            writeStream = File.Create(writeName & readFileName & ".bdtp" & loopIndex)
+                        Else
+                            writeStream = File.Create(writeName & readFileName & ".ndtp" & loopIndex)
                         End If
 
                         writeStream.Write(buffer, 0, bufferLen)
@@ -153,11 +158,19 @@ ToDTP:
         End If
     End Sub
 
-    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles CheckBox1.CheckedChanged
-        If CheckBox1.Checked Then
-            fileSize = ConstFileSizes.nitro
-        Else
+    Private Sub CheckBox1_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton1.CheckedChanged
+        If RadioButton1.Checked Then
             fileSize = ConstFileSizes.nonNitro
+        End If
+    End Sub
+    Private Sub CheckBox2_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton2.CheckedChanged
+        If RadioButton2.Checked Then
+            fileSize = ConstFileSizes.nitroBasic
+        End If
+    End Sub
+    Private Sub CheckBox3_CheckedChanged(sender As Object, e As EventArgs) Handles RadioButton3.CheckedChanged
+        If RadioButton3.Checked Then
+            fileSize = ConstFileSizes.nitro
         End If
     End Sub
 End Class

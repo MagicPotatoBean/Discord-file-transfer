@@ -27,7 +27,9 @@ Partial Class Form1
         Me.ConvertFromDTP = New System.Windows.Forms.Button()
         Me.ConvertToDTP = New System.Windows.Forms.Button()
         Me.FolderBrowserDialog1 = New System.Windows.Forms.FolderBrowserDialog()
-        Me.CheckBox1 = New System.Windows.Forms.CheckBox()
+        Me.RadioButton1 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton2 = New System.Windows.Forms.RadioButton()
+        Me.RadioButton3 = New System.Windows.Forms.RadioButton()
         Me.SuspendLayout()
         '
         'OpenFileDialog1
@@ -45,31 +47,57 @@ Partial Class Form1
         '
         'ConvertToDTP
         '
-        Me.ConvertToDTP.Location = New System.Drawing.Point(125, 12)
+        Me.ConvertToDTP.Location = New System.Drawing.Point(12, 40)
         Me.ConvertToDTP.Name = "ConvertToDTP"
         Me.ConvertToDTP.Size = New System.Drawing.Size(107, 22)
         Me.ConvertToDTP.TabIndex = 1
         Me.ConvertToDTP.Text = "Convert to DTP"
         Me.ConvertToDTP.UseVisualStyleBackColor = True
         '
-        'CheckBox1
+        'RadioButton1
         '
-        Me.CheckBox1.AutoSize = True
-        Me.CheckBox1.Location = New System.Drawing.Point(13, 40)
-        Me.CheckBox1.Name = "CheckBox1"
-        Me.CheckBox1.Size = New System.Drawing.Size(78, 17)
-        Me.CheckBox1.TabIndex = 2
-        Me.CheckBox1.Text = "Nitro Mode"
-        Me.CheckBox1.UseVisualStyleBackColor = True
+        Me.RadioButton1.AutoSize = True
+        Me.RadioButton1.Checked = True
+        Me.RadioButton1.Location = New System.Drawing.Point(12, 68)
+        Me.RadioButton1.Name = "RadioButton1"
+        Me.RadioButton1.Size = New System.Drawing.Size(68, 17)
+        Me.RadioButton1.TabIndex = 2
+        Me.RadioButton1.TabStop = True
+        Me.RadioButton1.Text = "Standard"
+        Me.RadioButton1.UseVisualStyleBackColor = True
+        '
+        'RadioButton2
+        '
+        Me.RadioButton2.AutoSize = True
+        Me.RadioButton2.Location = New System.Drawing.Point(12, 91)
+        Me.RadioButton2.Name = "RadioButton2"
+        Me.RadioButton2.Size = New System.Drawing.Size(75, 17)
+        Me.RadioButton2.TabIndex = 3
+        Me.RadioButton2.Text = "Nitro basic"
+        Me.RadioButton2.UseVisualStyleBackColor = True
+        '
+        'RadioButton3
+        '
+        Me.RadioButton3.AutoSize = True
+        Me.RadioButton3.Location = New System.Drawing.Point(12, 114)
+        Me.RadioButton3.Name = "RadioButton3"
+        Me.RadioButton3.Size = New System.Drawing.Size(47, 17)
+        Me.RadioButton3.TabIndex = 4
+        Me.RadioButton3.Text = "Nitro"
+        Me.RadioButton3.UseVisualStyleBackColor = True
         '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(247, 62)
-        Me.Controls.Add(Me.CheckBox1)
+        Me.ClientSize = New System.Drawing.Size(130, 141)
+        Me.Controls.Add(Me.RadioButton3)
+        Me.Controls.Add(Me.RadioButton2)
+        Me.Controls.Add(Me.RadioButton1)
         Me.Controls.Add(Me.ConvertToDTP)
         Me.Controls.Add(Me.ConvertFromDTP)
+        Me.MaximumSize = New System.Drawing.Size(146, 180)
+        Me.MinimumSize = New System.Drawing.Size(146, 180)
         Me.Name = "Form1"
         Me.Text = "File splitter"
         Me.ResumeLayout(False)
@@ -82,5 +110,7 @@ Partial Class Form1
     Friend WithEvents ConvertFromDTP As Button
     Friend WithEvents ConvertToDTP As Button
     Friend WithEvents FolderBrowserDialog1 As FolderBrowserDialog
-    Friend WithEvents CheckBox1 As CheckBox
+    Friend WithEvents RadioButton1 As RadioButton
+    Friend WithEvents RadioButton2 As RadioButton
+    Friend WithEvents RadioButton3 As RadioButton
 End Class
