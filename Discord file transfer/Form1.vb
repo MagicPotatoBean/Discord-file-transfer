@@ -26,7 +26,7 @@ NoFilesSelected:
                     .ShowDialog()
                     DTPInfoPath = .FileName
                 End With
-                If DTPInfoPath.Length Then
+                If DTPInfoPath.Length = 0 Then
                     MsgBox("Please select a DTPInfo file, or all of the .DTP files")
                     GoTo NoFilesSelected
                 End If
@@ -50,10 +50,15 @@ NoFilesSelected:
                 Exit Sub
         End Select
 FromDTP:
-        If Not File.Exists(readPaths(0)) Then
+        Try
+            If Not File.Exists(readPaths(0)) Then
+                MsgBox("Please select a DTPInfo file, or all of the .DTP files")
+                GoTo NoFilesSelected
+            End If
+        Catch ex As IndexOutOfRangeException
             MsgBox("Please select a DTPInfo file, or all of the .DTP files")
             GoTo NoFilesSelected
-        End If
+        End Try
         If sort(readPaths) Then
             GoTo FromDTP
         End If
@@ -88,7 +93,13 @@ FromDTP:
         Next
         Dim fileWriter As FileStream = File.Create(firstPath)
         For Each path In readPaths
-            Dim fileReader As FileStream = File.OpenRead(path)
+            Dim fileReader As FileStream
+            Try
+                fileReader = File.OpenRead(path)
+            Catch ex As Exception
+                MsgBox(ex.Message, MsgBoxStyle.Critical, "Missing file")
+                GoTo NoFilesSelected
+            End Try
             Dim buffer() As Byte
 
             If path.Split(".")(path.Split(".").Length - 1)(0) = "n" Then

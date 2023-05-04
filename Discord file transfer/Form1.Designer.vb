@@ -33,10 +33,6 @@ Partial Class Form1
         Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
-        'OpenFileDialog1
-        '
-        Me.OpenFileDialog1.FileName = "OpenFileDialog1"
-        '
         'ConvertFromDTP
         '
         Me.ConvertFromDTP.Location = New System.Drawing.Point(12, 12)
