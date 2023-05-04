@@ -11,6 +11,7 @@ Public Class Form1
     End Structure
     Dim fileSize As Integer = ConstFileSizes.nonNitro
     Private Sub FromDTP(sender As Object, e As EventArgs) Handles ConvertFromDTP.Click
+NoFilesSelected:
         Dim usingDTPInfo As MsgBoxResult = MsgBox("Use DTPInfo file?", MsgBoxStyle.YesNoCancel, "Convert from DTP")
         Dim readPaths() As String
         Select Case usingDTPInfo
@@ -25,6 +26,10 @@ Public Class Form1
                     .ShowDialog()
                     DTPInfoPath = .FileName
                 End With
+                If DTPInfoPath.Length Then
+                    MsgBox("Please select a DTPInfo file, or all of the .DTP files")
+                    GoTo NoFilesSelected
+                End If
                 Dim DTPInfoData() As String = File.ReadAllLines(DTPInfoPath)
                 ReDim readPaths(DTPInfoData.GetUpperBound(0))
                 Dim folderLocation As String = Strings.Left(DTPInfoPath, InStrRev(DTPInfoPath, "\"))
@@ -45,6 +50,10 @@ Public Class Form1
                 Exit Sub
         End Select
 FromDTP:
+        If Not File.Exists(readPaths(0)) Then
+            MsgBox("Please select a DTPInfo file, or all of the .DTP files")
+            GoTo NoFilesSelected
+        End If
         If sort(readPaths) Then
             GoTo FromDTP
         End If
@@ -106,13 +115,13 @@ FromDTP:
                 returnArr(Integer.Parse(path.Split("p")(path.Split("p").Length - 1)) - 1) = path
             Catch ex As Exception
                 Select Case MsgBox("Files aren't in the correct format, this is likely because they are not .dtp, .bdtp or .ndtp files, e.g. file.txt.dtp1", MsgBoxStyle.RetryCancel, "Files likely incompatible")
-                    Case Is = vbCancel
-                        Dim emptyString(0) As String
-                        Arr = emptyString
-                        Return False
-                    Case Is = vbRetry
-                        Return True
-                End Select
+                        Case Is = vbCancel
+                            Dim emptyString(0) As String
+                            Arr = emptyString
+                            Return False
+                        Case Is = vbRetry
+                            Return True
+                    End Select
             End Try
         Next
         Arr = returnArr
@@ -151,13 +160,13 @@ ToDTP:
                         Dim writeStream As FileStream
                         If RadioButton1.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".dtp" & loopIndex)
-                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex).Length)
+                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex & vbCrLf), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex).Length + 1)
                         ElseIf RadioButton2.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".bdtp" & loopIndex)
-                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex).Length)
+                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex & vbCrLf), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex).Length + 1)
                         Else
                             writeStream = File.Create(writeName & readFileName & ".ndtp" & loopIndex)
-                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex).Length)
+                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex & vbCrLf), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex).Length + 1)
                         End If
 
                         writeStream.Write(buffer, 0, bufferLen)
