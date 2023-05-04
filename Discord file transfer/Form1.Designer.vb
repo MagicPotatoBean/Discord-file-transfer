@@ -41,16 +41,16 @@ Partial Class Form1
         '
         Me.ConvertFromDTP.Location = New System.Drawing.Point(12, 12)
         Me.ConvertFromDTP.Name = "ConvertFromDTP"
-        Me.ConvertFromDTP.Size = New System.Drawing.Size(59, 22)
+        Me.ConvertFromDTP.Size = New System.Drawing.Size(63, 22)
         Me.ConvertFromDTP.TabIndex = 0
         Me.ConvertFromDTP.Text = "From DTP"
         Me.ConvertFromDTP.UseVisualStyleBackColor = True
         '
         'ConvertToDTP
         '
-        Me.ConvertToDTP.Location = New System.Drawing.Point(83, 12)
+        Me.ConvertToDTP.Location = New System.Drawing.Point(79, 12)
         Me.ConvertToDTP.Name = "ConvertToDTP"
-        Me.ConvertToDTP.Size = New System.Drawing.Size(59, 22)
+        Me.ConvertToDTP.Size = New System.Drawing.Size(63, 22)
         Me.ConvertToDTP.TabIndex = 1
         Me.ConvertToDTP.Text = "To DTP"
         Me.ConvertToDTP.UseVisualStyleBackColor = True
