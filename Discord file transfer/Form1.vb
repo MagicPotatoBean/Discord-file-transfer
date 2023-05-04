@@ -205,5 +205,13 @@ ToDTP:
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
+        MsgBox("Here's a quick guide on how to use my app
+
+First, you need to select your version of discord, either standard, nitro basic, or nitro.
+Now, you can click ""To DTP"" which will open a window to select the file (only one, but you can zip multiple together first)
+Then, you click ""select file"" and it will create .dtp (or .bdtp or .ndtp) files and a .manifest file which will make converting back far easier.
+
+To convert back, dont worry about the discord version, as that is done automatically, simply click ""From DTP"" and select either the files, or the manifest, depending on if you have one.
+DTP will now convert them back to the zip file(or whatever file you converted)")
     End Sub
 End Class
