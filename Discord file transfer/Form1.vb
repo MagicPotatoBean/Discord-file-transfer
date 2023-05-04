@@ -1,5 +1,8 @@
 ﻿Imports System.Diagnostics.Contracts
 Imports System.IO
+Imports System.Linq.Expressions
+Imports System.Text
+
 Public Class Form1
     Private Structure ConstFileSizes
         Const nonNitro As Integer = 26214399
@@ -8,19 +11,40 @@ Public Class Form1
     End Structure
     Dim fileSize As Integer = ConstFileSizes.nonNitro
     Private Sub FromDTP(sender As Object, e As EventArgs) Handles ConvertFromDTP.Click
-
-
-FromDTP:
+        Dim usingManifest As MsgBoxResult = MsgBox("Use manifest?", MsgBoxStyle.YesNoCancel, "Convert from DTP")
         Dim readPaths() As String
-        With OpenFileDialog1
-            .AddExtension = False
-            .Title = "DTP files to convert"
-            .ValidateNames = True
-            .CheckFileExists = False
-            .Multiselect = True
-            .ShowDialog()
-            readPaths = .FileNames
-        End With
+        Select Case usingManifest
+            Case Is = MsgBoxResult.Yes
+                Dim manifestPath As String
+                With OpenFileDialog1
+                    .AddExtension = False
+                    .Title = "DTP manifest"
+                    .ValidateNames = True
+                    .CheckFileExists = False
+                    .Multiselect = False
+                    .ShowDialog()
+                    manifestPath = .FileName
+                End With
+                Dim manifestData() As String = File.ReadAllLines(manifestPath)
+                ReDim readPaths(manifestData.GetUpperBound(0))
+                Dim folderLocation As String = Strings.Left(manifestPath, InStrRev(manifestPath, "\"))
+                For pathIndex = 0 To manifestData.GetUpperBound(0)
+                    readPaths(pathIndex) = folderLocation & manifestData(pathIndex)
+                Next
+            Case Is = MsgBoxResult.No
+                With OpenFileDialog1
+                    .AddExtension = False
+                    .Title = "DTP files to convert"
+                    .ValidateNames = True
+                    .CheckFileExists = False
+                    .Multiselect = True
+                    .ShowDialog()
+                    readPaths = .FileNames
+                End With
+            Case Is = MsgBoxResult.Cancel
+                Exit Sub
+        End Select
+FromDTP:
         If sort(readPaths) Then
             GoTo FromDTP
         End If
@@ -111,12 +135,14 @@ ToDTP:
             Dim readFileName As String = readPath.Split("\")(readPath.Split("\").Length - 1)
             Dim buffer(fileSize) As Byte
             Dim bufferLen As UInteger = 0
+            Dim writeManifest As FileStream
             Dim writePath As String = ""
             Dim writeName As String = ""
             writePath = readPath
             For pathSection = 0 To writePath.Split("\").Length - 2
                 writeName &= writePath.Split("\")(pathSection) & "\"
             Next
+            writeManifest = File.Create(writeName & readFileName & ".manifest")
             Do
                 Try
                     loopIndex += 1
@@ -125,10 +151,13 @@ ToDTP:
                         Dim writeStream As FileStream
                         If RadioButton1.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".dtp" & loopIndex)
+                            writeManifest.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex).Length)
                         ElseIf RadioButton2.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".bdtp" & loopIndex)
+                            writeManifest.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex).Length)
                         Else
                             writeStream = File.Create(writeName & readFileName & ".ndtp" & loopIndex)
+                            writeManifest.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex).Length)
                         End If
 
                         writeStream.Write(buffer, 0, bufferLen)
@@ -148,6 +177,7 @@ ToDTP:
 
                 End Try
             Loop
+            writeManifest.Close()
             readStream.Close()
         Else
             If readPath = "OpenFileDialog1" Then
@@ -172,5 +202,8 @@ ToDTP:
         If RadioButton3.Checked Then
             fileSize = ConstFileSizes.nitro
         End If
+    End Sub
+
+    Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
     End Sub
 End Class

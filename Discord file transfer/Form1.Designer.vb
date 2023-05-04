@@ -30,6 +30,7 @@ Partial Class Form1
         Me.RadioButton1 = New System.Windows.Forms.RadioButton()
         Me.RadioButton2 = New System.Windows.Forms.RadioButton()
         Me.RadioButton3 = New System.Windows.Forms.RadioButton()
+        Me.Button1 = New System.Windows.Forms.Button()
         Me.SuspendLayout()
         '
         'OpenFileDialog1
@@ -40,18 +41,18 @@ Partial Class Form1
         '
         Me.ConvertFromDTP.Location = New System.Drawing.Point(12, 12)
         Me.ConvertFromDTP.Name = "ConvertFromDTP"
-        Me.ConvertFromDTP.Size = New System.Drawing.Size(107, 22)
+        Me.ConvertFromDTP.Size = New System.Drawing.Size(59, 22)
         Me.ConvertFromDTP.TabIndex = 0
-        Me.ConvertFromDTP.Text = "Convert from DTP"
+        Me.ConvertFromDTP.Text = "From DTP"
         Me.ConvertFromDTP.UseVisualStyleBackColor = True
         '
         'ConvertToDTP
         '
-        Me.ConvertToDTP.Location = New System.Drawing.Point(12, 40)
+        Me.ConvertToDTP.Location = New System.Drawing.Point(83, 12)
         Me.ConvertToDTP.Name = "ConvertToDTP"
-        Me.ConvertToDTP.Size = New System.Drawing.Size(107, 22)
+        Me.ConvertToDTP.Size = New System.Drawing.Size(59, 22)
         Me.ConvertToDTP.TabIndex = 1
-        Me.ConvertToDTP.Text = "Convert to DTP"
+        Me.ConvertToDTP.Text = "To DTP"
         Me.ConvertToDTP.UseVisualStyleBackColor = True
         '
         'RadioButton1
@@ -86,20 +87,30 @@ Partial Class Form1
         Me.RadioButton3.Text = "Nitro"
         Me.RadioButton3.UseVisualStyleBackColor = True
         '
+        'Button1
+        '
+        Me.Button1.Location = New System.Drawing.Point(12, 39)
+        Me.Button1.Name = "Button1"
+        Me.Button1.Size = New System.Drawing.Size(130, 23)
+        Me.Button1.TabIndex = 5
+        Me.Button1.Text = "Help"
+        Me.Button1.UseVisualStyleBackColor = True
+        '
         'Form1
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
-        Me.ClientSize = New System.Drawing.Size(130, 141)
+        Me.ClientSize = New System.Drawing.Size(154, 141)
+        Me.Controls.Add(Me.Button1)
         Me.Controls.Add(Me.RadioButton3)
         Me.Controls.Add(Me.RadioButton2)
         Me.Controls.Add(Me.RadioButton1)
         Me.Controls.Add(Me.ConvertToDTP)
         Me.Controls.Add(Me.ConvertFromDTP)
-        Me.MaximumSize = New System.Drawing.Size(146, 180)
+        Me.MaximumSize = New System.Drawing.Size(170, 180)
         Me.MinimumSize = New System.Drawing.Size(146, 180)
         Me.Name = "Form1"
-        Me.Text = "File splitter"
+        Me.ShowIcon = False
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -113,4 +124,5 @@ Partial Class Form1
     Friend WithEvents RadioButton1 As RadioButton
     Friend WithEvents RadioButton2 As RadioButton
     Friend WithEvents RadioButton3 As RadioButton
+    Friend WithEvents Button1 As Button
 End Class
