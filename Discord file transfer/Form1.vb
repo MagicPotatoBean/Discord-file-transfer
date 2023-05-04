@@ -11,25 +11,25 @@ Public Class Form1
     End Structure
     Dim fileSize As Integer = ConstFileSizes.nonNitro
     Private Sub FromDTP(sender As Object, e As EventArgs) Handles ConvertFromDTP.Click
-        Dim usingManifest As MsgBoxResult = MsgBox("Use manifest?", MsgBoxStyle.YesNoCancel, "Convert from DTP")
+        Dim usingDTPInfo As MsgBoxResult = MsgBox("Use DTPInfo file?", MsgBoxStyle.YesNoCancel, "Convert from DTP")
         Dim readPaths() As String
-        Select Case usingManifest
+        Select Case usingDTPInfo
             Case Is = MsgBoxResult.Yes
-                Dim manifestPath As String
+                Dim DTPInfoPath As String
                 With OpenFileDialog1
                     .AddExtension = False
-                    .Title = "DTP manifest"
+                    .Title = "DTP DTPInfo"
                     .ValidateNames = True
                     .CheckFileExists = False
                     .Multiselect = False
                     .ShowDialog()
-                    manifestPath = .FileName
+                    DTPInfoPath = .FileName
                 End With
-                Dim manifestData() As String = File.ReadAllLines(manifestPath)
-                ReDim readPaths(manifestData.GetUpperBound(0))
-                Dim folderLocation As String = Strings.Left(manifestPath, InStrRev(manifestPath, "\"))
-                For pathIndex = 0 To manifestData.GetUpperBound(0)
-                    readPaths(pathIndex) = folderLocation & manifestData(pathIndex)
+                Dim DTPInfoData() As String = File.ReadAllLines(DTPInfoPath)
+                ReDim readPaths(DTPInfoData.GetUpperBound(0))
+                Dim folderLocation As String = Strings.Left(DTPInfoPath, InStrRev(DTPInfoPath, "\"))
+                For pathIndex = 0 To DTPInfoData.GetUpperBound(0)
+                    readPaths(pathIndex) = folderLocation & DTPInfoData(pathIndex)
                 Next
             Case Is = MsgBoxResult.No
                 With OpenFileDialog1
@@ -135,14 +135,14 @@ ToDTP:
             Dim readFileName As String = readPath.Split("\")(readPath.Split("\").Length - 1)
             Dim buffer(fileSize) As Byte
             Dim bufferLen As UInteger = 0
-            Dim writeManifest As FileStream
+            Dim writeDTPInfo As FileStream
             Dim writePath As String = ""
             Dim writeName As String = ""
             writePath = readPath
             For pathSection = 0 To writePath.Split("\").Length - 2
                 writeName &= writePath.Split("\")(pathSection) & "\"
             Next
-            writeManifest = File.Create(writeName & readFileName & ".manifest")
+            writeDTPInfo = File.Create(writeName & readFileName & ".DTPInfo")
             Do
                 Try
                     loopIndex += 1
@@ -151,13 +151,13 @@ ToDTP:
                         Dim writeStream As FileStream
                         If RadioButton1.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".dtp" & loopIndex)
-                            writeManifest.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex).Length)
+                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".dtp" & loopIndex).Length)
                         ElseIf RadioButton2.Checked Then
                             writeStream = File.Create(writeName & readFileName & ".bdtp" & loopIndex)
-                            writeManifest.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex).Length)
+                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".bdtp" & loopIndex).Length)
                         Else
                             writeStream = File.Create(writeName & readFileName & ".ndtp" & loopIndex)
-                            writeManifest.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex).Length)
+                            writeDTPInfo.Write(ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex), 0, ASCIIEncoding.ASCII.GetBytes(readFileName & ".ndtp" & loopIndex).Length)
                         End If
 
                         writeStream.Write(buffer, 0, bufferLen)
@@ -177,7 +177,7 @@ ToDTP:
 
                 End Try
             Loop
-            writeManifest.Close()
+            writeDTPInfo.Close()
             readStream.Close()
         Else
             If readPath = "OpenFileDialog1" Then
@@ -209,9 +209,9 @@ ToDTP:
 
 First, you need to select your version of discord, either standard, nitro basic, or nitro.
 Now, you can click ""To DTP"" which will open a window to select the file (only one, but you can zip multiple together first)
-Then, you click ""select file"" and it will create .dtp (or .bdtp or .ndtp) files and a .manifest file which will make converting back far easier.
+Then, you click ""select file"" and it will create .dtp (or .bdtp or .ndtp) files and a .DTPInfo file which will make converting back far easier.
 
-To convert back, dont worry about the discord version, as that is done automatically, simply click ""From DTP"" and select either the files, or the manifest, depending on if you have one.
+To convert back, dont worry about the discord version, as that is done automatically, simply click ""From DTP"" and select either the files, or the DTPInfo, depending on if you have one.
 DTP will now convert them back to the zip file(or whatever file you converted)")
     End Sub
 End Class
