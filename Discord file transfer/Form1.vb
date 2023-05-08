@@ -162,6 +162,8 @@ ToDTP:
             For pathSection = 0 To writePath.Split("\").Length - 2
                 writeName &= writePath.Split("\")(pathSection) & "\"
             Next
+            writeName = writeName.Replace(" ", "_")
+            readFileName = readFileName.Replace(" ", "_")
             writeDTPInfo = File.Create(writeName & readFileName & ".DTPInfo")
             Do
                 Try
