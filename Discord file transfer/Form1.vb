@@ -123,7 +123,8 @@ FromDTP:
         Dim returnArr(Arr.Length - 1) As String
         For Each path In Arr
             Try
-                returnArr(Integer.Parse(path.Split("p")(path.Split("p").Length - 1)) - 1) = path
+                Dim index As Integer = Integer.Parse(path.Split("p")(path.Split("p").Length - 1)) - 1
+                returnArr(index) = path
             Catch ex As Exception
                 Select Case MsgBox("Files aren't in the correct format, this is likely because they are not .dtp, .bdtp or .ndtp files, e.g. file.txt.dtp1", MsgBoxStyle.RetryCancel, "Files likely incompatible")
                         Case Is = vbCancel
